@@ -30,7 +30,8 @@ module.exports = {
     "react/prop-types": 0,
     "no-console": 1,
     "class-methods-use-this": 0,
-    "no-restricted-syntax": 0
+    "no-restricted-syntax": 0,
+    "import/extensions": 0
   },
   ignorePatterns: ["**/*.config.js"]
 };
