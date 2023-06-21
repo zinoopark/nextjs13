@@ -37,6 +37,7 @@ const handler = NextAuth({
       clientId: process.env.FACEBOOK_CLIENT_ID ?? "",
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? ""
     })
+    // TODO CredentialsProvider 추가하고 prisma 설치하기
   ]
 });
 
