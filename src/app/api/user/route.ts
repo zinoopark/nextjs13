@@ -16,12 +16,13 @@ export async function POST(request: Request) {
           name: body.name,
           email: body.email,
           password: await bcrypt.hash(body.password, 10)
-        }
+        } as any
+        // todo fix this any
       }
     )
   ;
 
-  const { password, ...result } = user;
+  const { password, ...result } = user as any;
   return new Response(JSON.stringify(result));
 
 }
