@@ -5,7 +5,13 @@ import KakaoProvider from "next-auth/providers/kakao";
 // import CoinbaseProvider from "next-auth/providers/coinbase";
 // import RedditProvider from "next-auth/providers/reddit";
 import FacebookProvider from "next-auth/providers/facebook";
+import CredentialsProvider from "next-auth/providers/credentials";
 
+declare module "next-auth" {
+  interface User {
+    id: number;
+  }
+}
 const handler = NextAuth({
   providers: [
     GoogleProvider({
@@ -36,8 +42,34 @@ const handler = NextAuth({
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID ?? "",
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? ""
-    })
+    }),
     // TODO CredentialsProvider 추가하고 prisma 설치하기
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: credentials?.username,
+            password: credentials?.password
+          })
+
+
+        });
+        const user = await res.json();
+
+        if (user) {
+          return user;
+        } else {
+          return null;
+        }
+      }
+    })
   ]
 });
 
